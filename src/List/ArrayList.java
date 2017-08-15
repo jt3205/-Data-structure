@@ -4,7 +4,7 @@ public class ArrayList<E> implements List<E>{
 	Object arr[];
 	
 	public ArrayList() {
-		
+		arr = new Object[10];
 	}
 	
 	public ArrayList(int length) {
@@ -26,6 +26,7 @@ public class ArrayList<E> implements List<E>{
 			arr[last] = e;
 		} catch (Exception e2) {
 			System.out.println("ArrayList add ½ÇÆÐ");
+			e2.printStackTrace();
 			return false;
 		}
 		return true;
@@ -41,7 +42,7 @@ public class ArrayList<E> implements List<E>{
 	@Override
 	public boolean contains(Object o) {
 		for (int i = 0; i < arr.length; i++) {
-			if(o.equals(arr[i]) || o == arr[i]){
+			if(arr[i].equals(o) || arr[i] == o){
 				return true;
 			}
 		}
@@ -57,39 +58,80 @@ public class ArrayList<E> implements List<E>{
 
 	@Override
 	public boolean remove(Object o) {
-		int tmp = 0;
+		boolean result = false;
+		boolean hasSame = false;
 		for (int i = 0; i < arr.length; i++) {
-			if(arr[i].equals(o) || arr[i] == o){
-				tmp = i;
+			if(arr[i] != null){
+				if(arr[i].equals(o) || arr[i] == o){
+					hasSame = true;
+				}
+				if(hasSame && i+1 < arr.length){
+					arr[i] = arr[i+1];
+				}
+				else if(hasSame && i+1 == arr.length){
+					arr[arr.length] = null;
+				}
 			}
 		}
-		return true;
+		
+		return result;
 	}
 	
 	@Override
 	public E remove(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		E e = (E) arr[index];
+		for (int i = index; i < arr.length; i++) {
+			if(i+1 < arr.length){
+				arr[i] = arr[i+1];
+			}
+			else if(i+1 == arr.length){
+				arr[arr.length] = null;
+			}
+		}
+		return e;
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		int size = 0;
+		for (int i = 0; i < arr.length; i++) {
+			if(arr[i] == null){
+				size = i;
+				break;
+			}
+		}
+		return size;
 	}
 
 	@Override
 	public void add(int index, Object element) {
-		// TODO Auto-generated method stub
-		
+		if(size() == arr.length + 1){
+			arr = expansion(arr);
+		}
+		for (int i = size(); i > index; i--) {
+			arr[i+1] = arr[i];
+		}
+		arr[index] = element;
 	}
 
 	@Override
 	public E set(int index, Object element) {
-		// TODO Auto-generated method stub
-		return null;
+		E e = (E) arr[index];
+		arr[index] = element;
+		return e;
 	}
 
+	@Override
+	public String toString() {
+		String result = "[";
+		for (int i = 0; i < arr.length; i++) {
+			if(arr[i] != null)
+				result += arr[i].toString()+" , ";
+		}
+		result += "]";
+		return result;
+	}
+	
 	private Object[] expansion(Object o[]){
 		Object arr[] = new Object[o.length*2];
 		for (int i = 0; i < o.length; i++) {
