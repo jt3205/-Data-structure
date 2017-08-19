@@ -1,6 +1,6 @@
 package Map;
 
-import java.util.Set;
+import Set.Set;
 
 public interface Map<K, V> {
 	void clear();
