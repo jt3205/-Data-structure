@@ -12,33 +12,44 @@ public class TreeSet<E> implements Set<E>{
 		else {
 			Node<E> nowNode = mainNode;
 			Node<E> subNode = new Node<E>();
+			Node<E> newNode = null;
 			int tmp = 0;
 			while(!(subNode == null)){
-				tmp = e.toString().compareTo(mainNode.getValue().toString());
+				tmp = e.toString().compareTo(nowNode.getValue().toString());
 				if(tmp == 0){
 					return false;
 				}
-				if(tmp == 1){
+				else if(tmp == 1){
 					subNode = nowNode.getRight();
 				}
 				else if(tmp == -1){
 					subNode = nowNode.getLeft();
 				}
+				if(subNode != null)
+					nowNode = subNode;
 			}
-			Node<E> newNode = new Node<E>(e);
-
+			if(tmp == 1){
+				nowNode.setRight(new Node<E>(e));
+			}
+			else if(tmp == -1){
+				nowNode.setLeft(new Node<E>(e));
+			}
 		}
 		return false;
 	}
 
+	E ceiling (E e){
+		
+		return e;
+	}
+	
 	@Override
 	public void clear() {
-		
+		mainNode = null;
 	}
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
